@@ -61,7 +61,7 @@ git add collections/ INDEX.md
 git commit -m "每周搜集 YYYY-MM-DD: 项目列表"
 
 # 4. 推送到 GitHub（使用 gh auth 认证）
-git push origin master
+git push origin main
 ```
 
 **注意**：Git 推送需要在 workdir 根目录已初始化 Git 仓库且已配置 remote origin。
