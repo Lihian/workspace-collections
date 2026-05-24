@@ -43,9 +43,43 @@ multica repo checkout <github-url>
 ```
 
 克隆后：
-1. 在项目根目录创建 COLLECTION.md，记录搜集原因、评分、标签
-2. 如有必要，整理项目结构或添加中文说明
-3. 更新工作区根目录的 INDEX.md，加入新项目的索引条目
+1. 删除子项目的 `.git` 目录（避免 gitlink 问题）：`find <project-dir>/.git -type f -delete && find <project-dir>/.git -type d -delete`
+2. 在项目根目录创建 COLLECTION.md，记录搜集原因、评分、标签
+3. 如有必要，整理项目结构或添加中文说明
+4. 更新工作区根目录的 INDEX.md，加入新项目的索引条目
+
+## Git 推送流程 (重要!)
+
+每次搜集完成后，必须将代码推送到工作区 Git 仓库 `https://github.com/Lihian/workspace-collections`：
+
+```bash
+# 1. 确保在 workdir 根目录
+# 2. 添加所有变更
+git add collections/ INDEX.md
+
+# 3. 提交（使用中文消息）
+git commit -m "每周搜集 YYYY-MM-DD: 项目列表"
+
+# 4. 推送到 GitHub（使用 gh auth 认证）
+git push origin master
+```
+
+**注意**：Git 推送需要在 workdir 根目录已初始化 Git 仓库且已配置 remote origin。
+如果 `git push` 需要认证，使用 `gh auth token` 获取 token。
+
+## 其他 Agent 如何使用搜集的代码
+
+其他 Multica 智能体可以通过以下方式使用搜集的项目：
+
+```bash
+# 方式1：直接 checkout 工作区仓库（推荐）
+multica repo checkout https://github.com/Lihian/workspace-collections
+
+# 方式2：在已有工作区仓库中查看
+# 仓库检出后，所有项目代码在 collections/{语言}/{项目名}/ 下
+```
+
+每个项目的 COLLECTION.md 包含完整的评估信息，方便快速判断项目是否适用。
 
 ## 工作区代码仓库结构
 搜集的项目按分类存放：
@@ -56,9 +90,10 @@ workspace-repo/
 │   ├── python/
 │   ├── javascript/
 │   ├── golang/
+│   ├── rust/
 │   ├── tools/
 │   └── ...
-└── COLLECTION.md         # 搜集标准与流程
+└── .gitignore            # 忽略 agent 运行时文件
 ```
 
 ## 可用工具
@@ -74,9 +109,10 @@ workspace-repo/
 3. 对候选项目逐一评估（看 README、stars、活跃度）
 4. 挑选 3-5 个最优秀的项目
 5. 使用 `multica repo checkout` 克隆到工作区
-6. 创建 COLLECTION.md 记录
+6. 删除子项目 `.git` 目录，创建 COLLECTION.md 记录
 7. 更新 INDEX.md 索引
-8. 将结果和搜集理由发布到 Issue 评论
+8. `git add` + `git commit` + `git push` 推送到 GitHub
+9. 将结果和搜集理由发布到 Issue 评论
 
 ## 规则
 - 用中文沟通，输出简洁直接
