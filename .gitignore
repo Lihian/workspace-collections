@@ -1,0 +1,16 @@
+# Agent runtime files
+.agent_context/
+.claude/
+
+# Temporary files
+reply.md
+result-comment.md
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
